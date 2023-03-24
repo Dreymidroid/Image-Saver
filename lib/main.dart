@@ -1,14 +1,41 @@
 import 'package:flutter/material.dart';
-import 'package:bloc/bloc.dart';
 import 'dart:math' as math show Random;
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() => runApp(
-      const MaterialApp(
+      MaterialApp(
         debugShowCheckedModeBanner: false,
         themeMode: ThemeMode.dark,
-        home: HomePage(),
+        home: BlocProvider(
+          create: (_) => ABloc(),
+          child: const HomePage(),
+        ),
       ),
     );
+
+extension Subscript<T> on Iterable<T> {
+  T? operator [](int index) => length > index ? elementAt(index) : null;
+}
+
+class ABloc extends Bloc<BlocTestEvent, BlocTestState?> {
+  ABloc() : super(null) {
+    on<Event1>(
+      (event, emit) => emit(BlocTestState()),
+    );
+    on<Event2>(
+      (event, emit) => emit(BlocTestState()),
+    );
+  }
+}
+
+class BlocTestEvent {}
+
+class Event1 extends BlocTestEvent {}
+
+class Event2 extends BlocTestEvent {
+}
+
+class BlocTestState {}
 
 const names = ["Foo", "Bar", "Baz"];
 
@@ -48,6 +75,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext ctxt) {
+
     return Scaffold(
         appBar: AppBar(),
         body: StreamBuilder<String?>(
@@ -66,7 +94,12 @@ class _HomePageState extends State<HomePage> {
               case ConnectionState.active:
                 return Column(
                   children: [
-                    Text(snapshot.data ?? ''),
+                    BlocBuilder<ABloc, BlocTestState?>(
+                        builder: (context, state) {
+                      return Text(
+                        snapshot.data ?? state.toString(),
+                      );
+                    }),
                     button,
                   ],
                 );
@@ -75,5 +108,5 @@ class _HomePageState extends State<HomePage> {
             }
           },
         ));
-  } 
+  }
 }
