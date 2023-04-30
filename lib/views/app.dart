@@ -25,7 +25,7 @@ class App extends StatelessWidget {
         themeMode: ThemeMode.dark,
         home: BlocConsumer<AppBloc, AppState>(
           listener: (context, appState) {
-            print(appState);
+
             if (appState.isLoading == true) {
               LoadingScreen.instance().show(
                 context: context,

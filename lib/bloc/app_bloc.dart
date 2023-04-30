@@ -53,6 +53,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     on<AppEventDeleteAccount>(
       (event, emit) async {
         final user = state.user;
+        state.images;
 
         if (user == null) {
           emit(

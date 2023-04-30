@@ -18,6 +18,7 @@ abstract class AppState {
 class AppStateLoggedIn extends AppState {
   final User user;
   final Iterable<Reference> images;
+
   const AppStateLoggedIn({
     required this.user,
     required this.images,
